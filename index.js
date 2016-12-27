@@ -234,7 +234,7 @@ function setCookieAndReload(response, body, options, callback) {
 // Workaround for better testing. Request has pretty poor API
 function requestMethod(method) {
   // For now only GET and POST are supported
-  method = method.toUpperCase();
+  method = method && method.toUpperCase();
 
   return method === 'POST' ? request.post : request.get;
 }
