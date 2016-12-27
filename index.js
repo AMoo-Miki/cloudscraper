@@ -1,8 +1,8 @@
 var vm = require('vm');
-var requestModule = require('request');
-var jar = requestModule.jar();
+var requestModule = require('requestretry');
+var jar = requestModule.Request.request.jar();
 
-var request      = requestModule.defaults({jar: jar}), // Cookies should be enabled
+var request      = requestModule.Request.request.defaults({jar: jar}), // Cookies should be enabled
     UserAgent    = 'Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36',
     Timeout      = 6000, // Cloudflare requires a delay of 5 seconds, so wait for at least 6.
     cloudscraper = {};

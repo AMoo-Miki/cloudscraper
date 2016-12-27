@@ -1,5 +1,5 @@
 var helper       = require('../spec_helper'),
-    request      = require('request');
+    request      = require('requestretry');
 
 describe('Cloudscraper', function() {
   var sandbox,
@@ -8,9 +8,9 @@ describe('Cloudscraper', function() {
       headers         = {'User-Agent': 'Chrome'},
 
       // Since request.jar returns new cookie jar instance, create one global instance and then stub it in beforeEach
-      jar             = request.jar(),
+      jar             = request.Request.request.jar(),
       // Since request.defaults returns new wrapper, create one global instance and then stub it in beforeEach
-      requestDefault  = request.defaults({jar: jar}),
+      requestDefault  = request.Request.request.defaults({jar: jar}),
       cloudscraper;
 
   before(function() {
@@ -19,8 +19,8 @@ describe('Cloudscraper', function() {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    sandbox.stub(request, 'jar').returns(jar);
-    sandbox.stub(request, 'defaults').returns(requestDefault);
+    sandbox.stub(request.Request.request, 'jar').returns(jar);
+    sandbox.stub(request.Request.request, 'defaults').returns(requestDefault);
     cloudscraper = require('../../index');
     // since cloudflare requires timeout, the module relies on setTimeout. It should be proprely stubbed to avoid ut running for too long
     this.clock = sinon.useFakeTimers();
@@ -40,7 +40,7 @@ describe('Cloudscraper', function() {
       .callsArgWith(1, null, expectedResponse, requestedPage);
 
     cloudscraper.get(url, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(requestedPage);
       expect(response).to.be.equal(expectedResponse);
       done();
@@ -57,7 +57,7 @@ describe('Cloudscraper', function() {
       .callsArgWith(1, null, expectedResponse, pageWithCaptcha);
 
     cloudscraper.get(url, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(pageWithCaptcha);
       expect(response).to.be.equal(expectedResponse);
       done();
@@ -95,7 +95,7 @@ describe('Cloudscraper', function() {
     .callsArgWith(1, null, response, requestedPage);
 
     cloudscraper.get(url, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(requestedPage);
       expect(response).to.be.equal(response);
       done();
@@ -134,7 +134,7 @@ describe('Cloudscraper', function() {
     .callsArgWith(1, null, response, requestedPage);
 
     cloudscraper.get(url, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(requestedPage);
       expect(response).to.be.equal(response);
       done();
@@ -158,7 +158,7 @@ describe('Cloudscraper', function() {
       .callsArgWith(1, null, expectedResponse, requestedPage);
 
     cloudscraper.post(url, body, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(requestedPage);
       expect(response).to.be.equal(expectedResponse);
       done();
@@ -180,7 +180,7 @@ describe('Cloudscraper', function() {
       .callsArgWith(1, null, expectedResponse, requestedPage);
 
     cloudscraper.post(url, rawBody, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(requestedPage);
       expect(response).to.be.equal(expectedResponse);
       done();
@@ -203,7 +203,7 @@ describe('Cloudscraper', function() {
     };
 
     cloudscraper.request(options, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(response).to.be.equal(expectedResponse);
       expect(body).to.be.equal(requestedData);
       done();
@@ -231,7 +231,7 @@ describe('Cloudscraper', function() {
     });
 
     cloudscraper.get(url, function(error, response, body) {
-      expect(error).to.be.null();
+      expect(error).to.be.null;
       expect(body).to.be.equal(requestedPage);
       done();
     }, headers);
